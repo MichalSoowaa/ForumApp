@@ -1,4 +1,7 @@
+using Forum.Domain.Queries.Post.GetAllPosts;
 using Forum.Frontend.Models;
+using MediatR;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,14 +11,19 @@ namespace Forum.Frontend.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 
-		public HomeController(ILogger<HomeController> logger)
+		private readonly IMediator _mediator;
+
+		public HomeController(ILogger<HomeController> logger, IMediator mediator)
 		{
 			_logger = logger;
+			_mediator = mediator;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			var posts = await _mediator.Send(new GetAllPostsQuery());
+
+			return View(posts);
 		}
 
 		public IActionResult Privacy()

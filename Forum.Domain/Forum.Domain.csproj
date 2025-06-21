@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Forum.Common\Forum.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

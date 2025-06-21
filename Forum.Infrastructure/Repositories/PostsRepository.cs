@@ -1,0 +1,21 @@
+﻿using Forum.Domain.Entities;
+using Forum.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
+
+namespace Forum.Infrastructure.Repositories
+{
+    public class PostsRepository : IPostsRepository
+    {
+        private readonly ForumTicketDbContext _context;
+
+        public PostsRepository(ForumTicketDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IEnumerable<Post>> GetAllPostsAsync()
+        {
+            return await _context.Posts.Include(p => p.Author).ToListAsync();
+        }
+    }
+}
