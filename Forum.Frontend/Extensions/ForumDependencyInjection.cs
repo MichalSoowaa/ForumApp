@@ -1,4 +1,5 @@
 ﻿using Forum.Domain.Queries.Post.GetAllPosts;
+using Forum.Domain.Queries.User.VerifyUserLogin;
 using Forum.Domain.Repositories;
 using Forum.Infrastructure;
 using Forum.Infrastructure.Repositories;
@@ -12,6 +13,7 @@ namespace Forum.Frontend.Extensions
 		public static IServiceCollection ForumAddApplication(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddScoped<IPostsRepository, PostsRepository>();
+			services.AddScoped<IUsersRepository, UsersRepository>();
 
 			services.AddDbContext<ForumTicketDbContext>(options =>
 				options.UseSqlServer(
@@ -21,6 +23,7 @@ namespace Forum.Frontend.Extensions
 			services.AddMediatR(cfg =>
 			{
 				cfg.RegisterServicesFromAssembly(typeof(GetAllPostsQuery).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(VerifyUserLoginQuery).Assembly);
 			});
 
 			return services;
