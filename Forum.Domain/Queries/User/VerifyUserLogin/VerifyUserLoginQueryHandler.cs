@@ -1,9 +1,10 @@
-﻿using Forum.Domain.Repositories;
+﻿using Forum.Domain.Queries.DTOs;
+using Forum.Domain.Repositories;
 using MediatR;
 
 namespace Forum.Domain.Queries.User.VerifyUserLogin
 {
-    public class VerifyUserLoginQueryHandler : IRequestHandler<VerifyUserLoginQuery, bool>
+    public class VerifyUserLoginQueryHandler : IRequestHandler<VerifyUserLoginQuery, UserPublicDTO>
     {
         private readonly IUsersRepository _repository;
 
@@ -12,9 +13,14 @@ namespace Forum.Domain.Queries.User.VerifyUserLogin
             _repository = repository;
         }
 
-        public async Task<bool> Handle(VerifyUserLoginQuery query, CancellationToken cancellationToken)
+        public async Task<UserPublicDTO?> Handle(VerifyUserLoginQuery query, CancellationToken cancellationToken)
         {
-            return await _repository.VerifyUserLoginAsync(query.Email, query.Password);
+            var user = await _repository.VerifyUserLoginAsync(query.Email, query.Password);
+
+            if (user == null)
+                return null;
+
+            return new UserPublicDTO(user.Id, user.Username);
         }
     }
 }

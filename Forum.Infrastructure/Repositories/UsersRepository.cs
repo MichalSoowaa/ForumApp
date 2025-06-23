@@ -1,4 +1,5 @@
-﻿using Forum.Domain.Repositories;
+﻿using Forum.Domain.Entities;
+using Forum.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Forum.Infrastructure.Repositories
@@ -12,9 +13,26 @@ namespace Forum.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<bool> VerifyUserLoginAsync(string email, string password)
+        public async Task<User?> VerifyUserLoginAsync(string email, string password)
         {
-            return await _context.Users.AnyAsync(x => x.Email == email && x.Password == password);
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+        }
+
+        public async Task<bool> IsUsernameAvailableAsync(string username)
+        {
+            return !await _context.Users.AnyAsync(x => x.Username == username);
+        }
+
+        public async Task<bool> IsEmailAvailableAsync(string email)
+        {
+            return !await _context.Users.AnyAsync(x => x.Email == email);
+        }
+
+        public async Task AddUserAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
     }
 }
