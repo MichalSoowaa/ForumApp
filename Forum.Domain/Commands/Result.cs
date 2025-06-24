@@ -17,7 +17,7 @@ namespace Forum.Domain.Commands
 			Errors = errors;
 		}
 
-		public static Result Fail(string message) => new Result(false, message, Enumerable.Empty<Error>());
+		public static Result Fail(string message) => new Result(false, message, new[] { new Error("global", message)});
 
 		public static Result Fail(ValidationResult validationResult)
 			=> new Result(

@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Forum.Domain.Queries.Post.GetAllPosts
 {
-    public sealed record GetAllPostsQuery : IRequest<List<PostDTO>>;
+    public sealed record GetAllPostsQuery : IRequest<List<PublicPostDTO>>;
 }

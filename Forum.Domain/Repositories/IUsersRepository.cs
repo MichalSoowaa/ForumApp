@@ -9,5 +9,6 @@ namespace Forum.Domain.Repositories
         Task<bool> IsUsernameAvailableAsync(string username);
         Task<bool> IsEmailAvailableAsync(string email);
         Task AddUserAsync(User user);
+        Task<User?> GetUserByIdAsync(long id);
     }
 }

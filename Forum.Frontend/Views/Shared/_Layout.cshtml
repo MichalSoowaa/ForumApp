@@ -31,12 +31,16 @@
                     </ul>
 
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                var username = User.Identity.Name;
-                                var firstLetter = string.IsNullOrEmpty(username) ? "?" : username.Substring(0, 1).ToUpper();
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-primary" asp-controller="Post" asp-action="Create">Utwórz post</a>
+                            </li>
 
+                            var username = User.Identity.Name;
+                            var firstLetter = string.IsNullOrEmpty(username) ? "?" : username.Substring(0, 1).ToUpper();
+
+                            <li class="nav-item">
                                 <div class="user-icon" onclick="toggleDropdown()">
                                     @firstLetter
                                 </div>
@@ -48,14 +52,16 @@
                                         <button type="submit">Wyloguj się</button>
                                     </form>
                                 </div>
-                            }
-                            else
-                            {
+                            </li>      
+                        }
+                        else
+                        {
+                            <li class="nav-item">
                                 <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#loginModal">
                                     Login
                                 </button>
-                            }
-                        </li>
+                            </li>  
+                        }
                     </ul>
                 </div>
             </div>
@@ -73,7 +79,7 @@
         </div>
     </footer>
 
-    <!-- MODAL LOGIN START -->
+    <!-- MODAL LOGIN -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -88,9 +94,8 @@
             </div>
         </div>
     </div>
-    <!-- MODAL LOGIN END -->
 
-    <!-- MODAL REGISTER START -->
+    <!-- MODAL REGISTER -->
     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -105,139 +110,10 @@
             </div>
         </div>
     </div>
-    <!-- MODAL REGISTER END -->
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-
-    <script> // LOGIN
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("loginForm");
-            if (!form) {
-                console.warn("loginForm not found");
-                return;
-            }
-
-            const errorBox = document.getElementById("loginValidationSummary");
-
-            form.addEventListener("submit", async function (e) {
-                e.preventDefault();
-
-                const formData = new FormData(form);
-                const data = new URLSearchParams(formData);
-
-                try {
-                    const response = await fetch(form.action, {
-                        method: "POST",
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: data
-                    });
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        location.reload();
-                    } 
-                    else {
-                        errorBox.innerHTML = result.message;
-                    }
-                } 
-                catch (err) {
-                    console.error("Błąd logowania", err);
-                    errorBox.innerHTML = "Wystąpił błąd serwera.";
-                }
-            });
-        });
-    </script>
-
-    <script> //REGISTER MODAL SHOWING
-        document.addEventListener("DOMContentLoaded", function () {
-            const registerLink = document.getElementById("showRegisterLink");
-
-            if (registerLink) {
-                registerLink.addEventListener("click", function (e) {
-                    e.preventDefault();
-
-                    const loginModal = bootstrap.Modal.getInstance(document.getElementById("loginModal"));
-                    loginModal.hide();
-
-                    const registerModal = new bootstrap.Modal(document.getElementById("registerModal"));
-                    registerModal.show();
-                });
-            }
-        });
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const registerForm = document.getElementById("registerForm");
-            const errorBox = document.getElementById("registerValidationSummary");
-
-            console.log("XD1");
-
-            if (registerForm) {
-                registerForm.addEventListener("submit", async function (e) {
-                    e.preventDefault();
-
-                    console.log("XD2");
-
-                    const formData = new FormData(registerForm);
-                    const data = new URLSearchParams(formData);
-
-                    try {
-
-                        console.log("XD3");
-                        const response = await fetch(registerForm.action, {
-                            method: "POST",
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: data
-                        });
-
-                        const result = await response.json();
-
-                        if (result.success) {
-                            console.log("XDsuccess");
-                            window.location.href = result.redirectUrl;
-                        }
-                        else {
-                            console.log("XDnotsuccess");
-                            showRegisterErrors(result.errors);
-                        }
-                    }
-                    catch (err) {
-                        console.log("XD4");
-                        console.log("Błąd rejestracji", err);
-                        errorBox.innerHTML = "Wystąpił błąd serwera";
-                    }
-                });
-            }
-
-            function showRegisterErrors(errors) {
-                document.querySelectorAll(".register-error").forEach(e => e.remove());
-
-                console.log(errors);
-
-                for (const key in errors) {
-                    const messages = errors[key];
-                    const input = document.querySelector(`#registerForm [name="${key}"]`);
-
-                    if (input) {
-                        const span = document.createElement("span");
-                        span.classList.add("text-danger", "register-error");
-                        span.textContent = messages.join(", ");
-                        input.parentNode.appendChild(span);
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>

@@ -17,5 +17,11 @@ namespace Forum.Infrastructure.Repositories
         {
             return await _context.Posts.Include(p => p.Author).ToListAsync();
         }
+
+        public async Task AddPostAsync(Post post)
+        {
+           await _context.Posts.AddAsync(post);
+           await _context.SaveChangesAsync();
+        }
     }
 }

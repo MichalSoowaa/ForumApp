@@ -25,11 +25,11 @@ namespace Forum.Domain.Entities
 
 		protected Post() { }
 
-		public Post(string title, string content, long authorId)
+		public Post(string title, string content, User author)
 		{
 			Title = title;
 			Content = content;
-			AuthorId = authorId;
+			Author = author;
 			CreationDate = DateTime.Now;
 			EditDate = DateTime.Now;
 		}

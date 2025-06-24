@@ -34,5 +34,10 @@ namespace Forum.Infrastructure.Repositories
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<User?> GetUserByIdAsync(long id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
     }
 }

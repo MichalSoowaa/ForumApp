@@ -1,0 +1,11 @@
+﻿@model Forum.Domain.Queries.DTOs.AnswerDetailsDTO;
+
+<form asp-action="AnswerForm" method="post">
+	<div class="form-group">
+		<label asp-for="Content"></label>
+		<textarea asp-for="Content" class="form-control" rows="4"></textarea>
+		<span asp-validation-for="Content" class="text-danger"></span>
+	</div>
+
+	<button type="submit" class="btn btn-primary mt-2"></button>
+</form>
