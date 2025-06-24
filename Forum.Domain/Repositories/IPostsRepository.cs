@@ -8,5 +8,6 @@ namespace Forum.Domain.Repositories
     {
         Task<IEnumerable<Post>> GetAllPostsAsync();
         Task AddPostAsync(Post post);
+        Task<Post> GetPostAsync(long id);
     }
 }

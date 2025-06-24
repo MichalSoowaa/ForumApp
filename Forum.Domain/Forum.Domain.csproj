@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Forum.Common\Forum.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\Answer\Add\" />
-  </ItemGroup>
-
 </Project>

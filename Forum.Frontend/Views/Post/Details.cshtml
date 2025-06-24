@@ -37,9 +37,9 @@
 	@if (User.Identity.IsAuthenticated)
 	{
 		<button class="btn btn-outline-secondary" onclick="toggleAnswerForm()">Odpowiedz</button>
+
+		<div id="answerContainer" class="mt-3" style="display: none;">
+			@await Html.PartialAsync("_AnswerFormPartial", new Forum.Domain.Queries.DTOs.AnswerDTO() { PostId = Model.Id })
+		</div>
 	}
-		
-	<div id="answerContainer" class="mt-3" style="display: none;">
-		@await Html.PartialAsync("_AnswerFormPartial", new Forum.Domain.Queries.DTOs.AnswerDTO() { PostId = Model.Id });
-	</div>
 </div>

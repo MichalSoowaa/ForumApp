@@ -5,18 +5,20 @@
         <div class="col-md-8">
             @foreach(var post in Model)
             {
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <p class="card-text text-muted small mb-1">
-                            <strong>@post.Author</strong> &bull;
-                            @GetRelativeTime(post.CreationDate)
-                        </p>
+                <a href="@Url.Action("Details", "Post", new { id = post.Id })" class="text-decoration-none text-reset">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p class="card-text text-muted small mb-1">
+                                <strong>@post.Author</strong> &bull;
+                                @GetRelativeTime(post.CreationDate)
+                            </p>
 
-                        <h5 class="card-title mb-2">@post.Title</h5>
+                            <h5 class="card-title mb-2">@post.Title</h5>
 
-                        <p class="card-text">@post.Content</p>
+                            <p class="card-text">@post.Content</p>
+                        </div>
                     </div>
-                </div>
+                </a>      
             }
         </div>
     </div>

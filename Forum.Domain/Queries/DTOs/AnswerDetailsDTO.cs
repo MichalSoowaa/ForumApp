@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Forum.Domain.Queries.DTOs
 {
-    public sealed record AnswerDetailsDTO(string Content, string Author, long PostId, DateTime CreationDate);
+    public sealed record AnswerDetailsDTO(string Content, string Author, DateTime CreationDate);
 }

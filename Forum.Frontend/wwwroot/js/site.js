@@ -4,6 +4,10 @@
 // Write your JavaScript code.
 
 
+
+// trzeba zrefaktoryzować ten JS :(
+
+
 function validateLogin() {
     const form = document.getElementById("loginForm");
 
@@ -210,11 +214,74 @@ function toggleAnswerForm() {
     container.style.display = container.style.display === "none" ? "block" : "none";
 }
 
+function validateNewAnswer() {
+    const form = document.getElementById("answerForm");
+
+    if (!form) {
+        console.warn("Answer form not found");
+        return;
+    }
+
+    const errorBox = document.getElementById("newAnswerValidationSummary");
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData);
+
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: data
+            });
+
+            const result = await response.json();
+
+            console.log(result);
+
+            if (result.success) {
+                location.reload();
+            }
+            else {
+                showErrors(result.errors);
+            }
+        }
+        catch (err) {
+            console.error("Błąd logowania", err);
+            errorBox.innerHTML = "Wystąpił błąd serwera.";
+        }
+
+        function showErrors(errors) {
+            document.querySelectorAll(".register-error").forEach(e => e.remove());
+
+            console.log(errors);
+
+            for (const key in errors) {
+                const messages = errors[key];
+                const input = document.querySelector(`#answerForm [name="${key}"]`);
+
+                if (input) {
+                    const span = document.createElement("span");
+                    span.classList.add("text-danger", "register-error");
+                    span.textContent = messages.join(", ");
+                    input.parentNode.appendChild(span);
+                }
+            }
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     validateLogin();
     addConnectionBetweenLoginAndRegisterModals();
     validateRegistration();
     addDropdownLogic();
     validateNewPost();
-    toggleAnswerForm();
+    //toggleAnswerForm();
+    validateNewAnswer();
 });

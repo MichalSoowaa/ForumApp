@@ -1,6 +1,8 @@
-﻿using Forum.Domain.Commands.Post.Create;
+﻿using Forum.Domain.Commands.Answer.Add;
+using Forum.Domain.Commands.Post.Create;
 using Forum.Domain.Commands.User.Register;
 using Forum.Domain.Queries.DTOs;
+using Forum.Domain.Queries.Post.GetPostDetails;
 using Forum.Domain.Queries.User.VerifyUserLogin;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +22,13 @@ namespace Forum.Frontend.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Details(long id)
+        {
+            var post = await _mediator.Send(new GetPostDetailsQuery(id));
+
+            return View(post);
         }
 
         [HttpGet]
@@ -69,13 +78,13 @@ namespace Forum.Frontend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAnswer()
+        public async Task<IActionResult> AddAnswer(AnswerDTO model)
         {
 			try
 			{
 				long.TryParse(User.FindFirstValue("Id"), out long userId);
 
-				var command = new CreateNewPostCommand(model.Title, model.Content, userId);
+				var command = new AddAnswerCommand(model.Content, model.PostId, userId);
 				var result = await _mediator.Send(command);
 
 				if (result.IsSuccess)

@@ -1,4 +1,8 @@
-﻿using Forum.Domain.Queries.Post.GetAllPosts;
+﻿using Forum.Domain.Commands.Answer.Add;
+using Forum.Domain.Commands.Post.Create;
+using Forum.Domain.Commands.User.Register;
+using Forum.Domain.Queries.Post.GetAllPosts;
+using Forum.Domain.Queries.Post.GetPostDetails;
 using Forum.Domain.Queries.User.VerifyUserLogin;
 using Forum.Domain.Repositories;
 using Forum.Infrastructure;
@@ -16,6 +20,7 @@ namespace Forum.Frontend.Extensions
 		{
 			services.AddScoped<IPostsRepository, PostsRepository>();
 			services.AddScoped<IUsersRepository, UsersRepository>();
+			services.AddScoped<IAnswersRepository, AnswersRepository>();
 
 			services.AddDbContext<ForumTicketDbContext>(options =>
 				options.UseSqlServer(
@@ -33,6 +38,10 @@ namespace Forum.Frontend.Extensions
 			{
 				cfg.RegisterServicesFromAssembly(typeof(GetAllPostsQuery).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(VerifyUserLoginQuery).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(GetPostDetailsQuery).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(CreateNewPostCommand).Assembly);
+				cfg.RegisterServicesFromAssembly(typeof(AddAnswerCommand).Assembly);
 			});
 
 			return services;

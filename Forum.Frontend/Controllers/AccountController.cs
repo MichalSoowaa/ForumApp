@@ -68,9 +68,24 @@ namespace Forum.Frontend.Controllers
                 if (result.IsSuccess)
                 {
                     TempData["SuccessMessage"] = "Rejestracja przebiegła pomyślnie";
-                    await _mediator.Send(new VerifyUserLoginQuery(model.Email, model.Password));
+                    var user = await _mediator.Send(new VerifyUserLoginQuery(model.Email, model.Password));
 
-                    return Json(new { success = true, redirectUrl = Url.Action("Index", "Home")});
+                    if (user == null)
+                        return Json(new { success = false, redirectUrl = Url.Action("Index", "Home") });
+
+					var claims = new List<Claim>
+			        {
+				        new Claim(ClaimTypes.Name, user.Username),
+				        new Claim("Id", user.Id.ToString())
+			        };
+
+					var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+					await HttpContext.SignInAsync(
+						CookieAuthenticationDefaults.AuthenticationScheme,
+						new ClaimsPrincipal(claimsIdentity));
+
+					return Json(new { success = true, redirectUrl = Url.Action("Index", "Home")});
                 }
 
                 foreach (var error in result.Errors)

@@ -23,5 +23,14 @@ namespace Forum.Infrastructure.Repositories
            await _context.Posts.AddAsync(post);
            await _context.SaveChangesAsync();
         }
+
+        public async Task<Post> GetPostAsync(long id)
+        {
+            return await _context.Posts
+                .Include(p => p.Author)
+                .Include(p => p.Answers)
+                    .ThenInclude(a => a.Author)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
     }
 }

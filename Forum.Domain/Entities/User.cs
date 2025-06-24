@@ -7,10 +7,11 @@ namespace Forum.Domain.Entities
 	[Table("Users", Schema = "Forum")]
 	public class User : BaseEntity
 	{
-		[MaxLength(256)] [Required]
+		[MaxLength(256)]
+		[Required]
 		public string Username { get; protected set; }
 
-		[EmailAddress] [Required]
+		[Required]
 		public string Email { get; protected set; }
 
 		[Required]

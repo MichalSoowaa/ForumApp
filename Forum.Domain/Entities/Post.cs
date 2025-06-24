@@ -7,7 +7,8 @@ namespace Forum.Domain.Entities
 	[Table("Posts", Schema = "Forum")]
 	public class Post : BaseEntity
 	{
-		[MaxLength(256)] [Required]
+		[MaxLength(256)]
+		[Required]
 		public string Title { get; protected set; }
 
 		[Required]
@@ -23,7 +24,9 @@ namespace Forum.Domain.Entities
 		public long AuthorId {  get; protected set; }
 		public User Author { get; protected set; }
 
-		protected Post() { }
+        public virtual ICollection<Answer> Answers { get; protected set; }
+
+        protected Post() { }
 
 		public Post(string title, string content, User author)
 		{
