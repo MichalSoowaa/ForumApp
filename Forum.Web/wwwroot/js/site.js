@@ -37,10 +37,22 @@ function validateLogin() {
             const result = await response.json();
 
             if (result.success) {
+                console.log("Login success");
                 location.reload();
             }
             else {
-                errorBox.innerHTML = result.message;
+                console.log("Login fail");
+
+                if (!result.errors)
+                    errorBox.textContent = "Niepoprawne dane";
+
+                for (let field in result.errors) {
+                    const messages = result.errors[field];
+                    const errorElement = document.querySelector(`[data-valmsg-for="${field}"]`);
+                    if (errorElement) {
+                        errorElement.textContent = messages.join(", ");
+                    }
+                }
             }
         }
         catch (err) {

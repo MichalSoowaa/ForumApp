@@ -1,4 +1,4 @@
-using Forum.Frontend.Extensions;
+using Forum.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

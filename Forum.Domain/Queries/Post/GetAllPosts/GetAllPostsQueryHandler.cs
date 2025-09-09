@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Forum.Domain.Queries.Post.GetAllPosts
 {
-    public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, List<PublicPostDTO>>
+    public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, List<PostPublic>>
     {
         private readonly IPostsRepository _repository;
 
@@ -18,11 +18,11 @@ namespace Forum.Domain.Queries.Post.GetAllPosts
             _repository = repository;
         }
 
-        public async Task<List<PublicPostDTO>> Handle(GetAllPostsQuery query, CancellationToken cancellationToken)
+        public async Task<List<PostPublic>> Handle(GetAllPostsQuery query, CancellationToken cancellationToken)
         {
             var posts = await _repository.GetAllPostsAsync();
 
-            return posts.Select(post => new PublicPostDTO(
+            return posts.Select(post => new PostPublic(
                 post.Id,
                 post.Title,
                 post.Content,

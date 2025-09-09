@@ -1,4 +1,4 @@
-﻿@model Forum.Domain.Queries.DTOs.UserLoginDTO;
+﻿@model Forum.Web.Models.UserLoginViewModel;
 
 <form id="loginForm" asp-action="Login" asp-controller="Account" method="post">
 	<div class="form-group">
@@ -17,7 +17,7 @@
 	<div id="loginValidationSummary" class="text-damger mb-2"></div>
 
 	<div class="mt-3 text-center">
-		Don't have an account?
-		<a href="#" id="showRegisterLink">Sign up!</a>
+		Nie masz konta?
+		<a href="#" id="showRegisterLink">Zarejestruj się!</a>
 	</div>
 </form>

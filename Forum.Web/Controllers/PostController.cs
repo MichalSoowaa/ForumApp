@@ -1,14 +1,12 @@
 ﻿using Forum.Domain.Commands.Answer.Add;
 using Forum.Domain.Commands.Post.Create;
-using Forum.Domain.Commands.User.Register;
 using Forum.Domain.Queries.DTOs;
 using Forum.Domain.Queries.Post.GetPostDetails;
-using Forum.Domain.Queries.User.VerifyUserLogin;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace Forum.Frontend.Controllers
+namespace Forum.Web.Controllers
 {
     public class PostController : Controller
     {

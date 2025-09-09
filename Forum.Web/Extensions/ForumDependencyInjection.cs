@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace Forum.Frontend.Extensions
+namespace Forum.Web.Extensions
 {
 	public static class ForumDependencyInjection
 	{

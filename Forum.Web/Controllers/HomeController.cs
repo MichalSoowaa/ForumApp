@@ -1,16 +1,15 @@
 using Forum.Domain.Queries.Post.GetAllPosts;
-using Forum.Frontend.Models;
+using Forum.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Forum.Frontend.Controllers
+namespace Forum.Web.Controllers
 {
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-
 		private readonly IMediator _mediator;
 
 		public HomeController(ILogger<HomeController> logger, IMediator mediator)

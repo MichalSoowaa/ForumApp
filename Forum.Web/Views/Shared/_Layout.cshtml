@@ -9,7 +9,7 @@
     <title>@ViewData["Title"] Forum dyskusyjne </title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Forum.Frontend.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Forum.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="modal-body">
-                    @await Html.PartialAsync("~/Views/Account/_LoginPartial.cshtml", new Forum.Domain.Queries.DTOs.UserLoginDTO("", ""))
+                    @await Html.PartialAsync("~/Views/Account/_LoginPartial.cshtml", new Forum.Web.Models.UserLoginViewModel())
                 </div>
             </div>
         </div>
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="modal-body">
-                    @await Html.PartialAsync("~/Views/Account/_RegisterPartial.cshtml", new Forum.Domain.Queries.DTOs.UserRegisterDTO("", "", "", ""))
+                    @await Html.PartialAsync("~/Views/Account/_RegisterPartial.cshtml", new Forum.Web.Models.UserRegisterViewModel())
                 </div>
             </div>
         </div>

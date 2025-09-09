@@ -1,13 +1,14 @@
 ﻿using Forum.Domain.Commands.User.Register;
 using Forum.Domain.Queries.DTOs;
 using Forum.Domain.Queries.User.VerifyUserLogin;
+using Forum.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace Forum.Frontend.Controllers
+namespace Forum.Web.Controllers
 {
     public class AccountController : Controller
     {
@@ -24,13 +25,26 @@ namespace Forum.Frontend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(UserLoginDTO model)
+        public async Task<IActionResult> Login(UserLoginViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+				var errors = ModelState
+		            .Where(x => x.Value.Errors.Count > 0)
+		            .ToDictionary(
+			            kvp => kvp.Key,
+			            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+		            );
+
+				return Json(new { success = false, errors });
+			}
+                
+
             var user = await _mediator.Send(new VerifyUserLoginQuery(model.Email, model.Password));
 
             if(user == null)
             {
-                return Json(new { success = false, message = "Niepoprawne dane" });
+                return Json(new { success = false });
             }
 
             var claims = new List<Claim>
@@ -62,12 +76,13 @@ namespace Forum.Frontend.Controllers
         {
             try
             {
-                var result = await _mediator.Send(
-                    new RegisterUserCommand(model.Username, model.Email, model.Password, model.ConfirmedPassword));
+                var command = new RegisterUserCommand(model.Username, model.Email, model.Password, model.ConfirmedPassword);
+
+				var result = await _mediator.Send(command);
 
                 if (result.IsSuccess)
                 {
-                    TempData["SuccessMessage"] = "Rejestracja przebiegła pomyślnie";
+                    //TempData["SuccessMessage"] = "Rejestracja przebiegła pomyślnie";
                     var user = await _mediator.Send(new VerifyUserLoginQuery(model.Email, model.Password));
 
                     if (user == null)
@@ -88,8 +103,10 @@ namespace Forum.Frontend.Controllers
 					return Json(new { success = true, redirectUrl = Url.Action("Index", "Home")});
                 }
 
-                foreach (var error in result.Errors)
-                {
+				ModelState.Clear();
+
+				foreach (var error in result.Errors)
+                {           
                     ModelState.AddModelError(error.PropertyName, error.Message);
                 }
 
@@ -103,7 +120,7 @@ namespace Forum.Frontend.Controllers
             {
                 return Json(new
                 {
-                    succes = false,
+                    success = false,
                     errors = new Dictionary<string, string[]>
                     {
                         { "", new[] { "Błąd serwera: " + ex.Message } }

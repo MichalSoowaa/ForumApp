@@ -8,7 +8,7 @@ namespace Forum.Domain.Entities
 	public class User : BaseEntity
 	{
 		[MaxLength(256)]
-		[Required]
+		[Required(ErrorMessage = "XD")]
 		public string Username { get; protected set; }
 
 		[Required]
