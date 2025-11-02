@@ -22,6 +22,8 @@ namespace Forum.Web.Controllers
 		{
 			var posts = await _mediator.Send(new GetAllPostsQuery());
 
+			//throw new Exception();
+
 			return View(posts);
 		}
 

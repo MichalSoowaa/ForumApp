@@ -39,7 +39,6 @@ namespace Forum.Web.Controllers
 				return Json(new { success = false, errors });
 			}
                 
-
             var user = await _mediator.Send(new VerifyUserLoginQuery(model.Email, model.Password));
 
             if(user == null)
@@ -57,8 +56,8 @@ namespace Forum.Web.Controllers
             
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity));
-
+                new ClaimsPrincipal(claimsIdentity)
+                );
 
             return Json(new { success = true });
         }
@@ -118,6 +117,8 @@ namespace Forum.Web.Controllers
             }
             catch (Exception ex)
             {
+                //throw new Exception();
+
                 return Json(new
                 {
                     success = false,

@@ -27,7 +27,8 @@ namespace Forum.Domain.Queries.Post.GetAllPosts
                 post.Title,
                 post.Content,
                 post.Author.Username,
-                post.CreationDate)).ToList();
+                post.CreationDate
+                )).ToList();
         }
     }
 }
