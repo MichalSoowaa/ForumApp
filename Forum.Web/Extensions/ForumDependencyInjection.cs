@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using FluentValidation;
 
 namespace Forum.Web.Extensions
 {
@@ -43,6 +44,9 @@ namespace Forum.Web.Extensions
 				cfg.RegisterServicesFromAssembly(typeof(CreateNewPostCommand).Assembly);
 				cfg.RegisterServicesFromAssembly(typeof(AddAnswerCommand).Assembly);
 			});
+
+			services.AddScoped<IValidator<RegisterUserCommand>, RegisterUserCommandValidator>();
+			services.AddControllersWithViews();
 
 			return services;
 		}

@@ -1,4 +1,5 @@
-﻿using Forum.Domain.Entities;
+﻿using FluentValidation;
+using Forum.Domain.Entities;
 using Forum.Domain.Repositories;
 using MediatR;
 
@@ -7,25 +8,20 @@ namespace Forum.Domain.Commands.User.Register
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result>
     {
         private readonly IUsersRepository _repository;
+        private readonly IValidator<RegisterUserCommand> _validator;
 
-        public RegisterUserCommandHandler(IUsersRepository repository)
+        public RegisterUserCommandHandler(IUsersRepository repository, IValidator<RegisterUserCommand> validator)
         {
             _repository = repository;
+            _validator = validator;
         }
 
         public async Task<Result> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
         {
-            var validator = new RegisterUserCommandValidator();
-            var validationResult = await validator.ValidateAsync(command, cancellationToken);
+            var validationResult = await _validator.ValidateAsync(command, cancellationToken);
 
             if (!validationResult.IsValid)
                 return Result.Fail(validationResult);
-
-            if (!await _repository.IsUsernameAvailableAsync(command.Username))
-                return Result.Fail("Ta nazwa użytkownika jest zajęta");
-
-            if (!await _repository.IsEmailAvailableAsync(command.Email))
-                return Result.Fail("Ten email jest zajęty");
 
             var user = new Forum.Domain.Entities.User(command.Username, command.Email, command.Password);
 

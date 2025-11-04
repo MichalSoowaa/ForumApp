@@ -3,6 +3,61 @@
 
 // Write your JavaScript code.
 
+
+function validateLogin() {
+    const form = document.getElementById("loginForm");
+
+    if (!form) {
+        console.warn("loginForm not found");
+        return;
+    }
+
+    const errorBox = document.getElementById("loginValidationSummary");
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData);
+
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: data
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                console.log("Login success");
+                location.reload();
+            }
+            else {
+                console.log("Login fail");
+
+                if (!result.errors)
+                    errorBox.textContent = "Niepoprawne dane";
+
+                for (let field in result.errors) {
+                    const messages = result.errors[field];
+                    const errorElement = document.querySelector(`[data-valmsg-for="${field}"]`);
+                    if (errorElement) {
+                        errorElement.textContent = messages.join(", ");
+                    }
+                }
+            }
+        }
+        catch (err) {
+            console.error("Login error: ", err.messages);
+            alert(err.messages);
+        }
+    });
+}
+
 function addConnectionBetweenLoginAndRegisterModals() {
     const registerLink = document.getElementById("showRegisterLink");
 
@@ -16,6 +71,62 @@ function addConnectionBetweenLoginAndRegisterModals() {
             const registerModal = new bootstrap.Modal(document.getElementById("registerModal"));
             registerModal.show();
         })
+    }
+}
+
+function validateRegistration() {
+    const registerForm = document.getElementById("registerForm");
+    const errorBox = document.getElementById("registerValidationSummary");
+
+    if (registerForm) {
+        registerForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(registerForm);
+            const data = new URLSearchParams(formData);
+
+            try {
+                const response = await fetch(registerForm.action, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: data
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = result.redirectUrl;
+                }
+                else {
+                    showRegisterErrors(result.errors);
+                }
+            }
+            catch (err) {
+                console.log("Registration error: ", err);
+                errorBox.innerHTML = "Wystąpił błąd serwera";
+            }
+        });
+    }
+
+    function showRegisterErrors(errors) {
+        document.querySelectorAll(".register-error").forEach(e => e.remove());
+
+        console.log(errors);
+
+        for (const key in errors) {
+            const messages = errors[key];
+            const input = document.querySelector(`#registerForm [name="${key}"]`);
+
+            if (input) {
+                const span = document.createElement("span");
+                span.classList.add("text-danger", "register-error");
+                span.textContent = messages.join(", ");
+                input.parentNode.appendChild(span);
+            }
+        }
     }
 }
 
@@ -50,6 +161,7 @@ function toggleAnswerForm() {
 
 document.addEventListener('DOMContentLoaded', function () {
     //validateLogin();
+    console.log("XDDDDD");
     addConnectionBetweenLoginAndRegisterModals();
     //validateRegistration();
     addDropdownLogic();

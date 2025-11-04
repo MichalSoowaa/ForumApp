@@ -18,6 +18,8 @@ namespace Forum.Domain.Commands
 		}
 
 		public static Result Fail(string message) => new Result(false, message, new[] { new Error("global", message)});
+		
+		public static Result Fail(string key, string message) => new Result(false, message, new[] { new Error(key, message)});
 
 		public static Result Fail(ValidationResult validationResult)
 			=> new Result(

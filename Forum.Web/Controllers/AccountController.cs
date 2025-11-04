@@ -59,7 +59,7 @@ namespace Forum.Web.Controllers
                 new ClaimsPrincipal(claimsIdentity)
                 );
 
-            return Json(new { success = true });
+            return Json(new { success = true, redirectUrl = Url.Action("Index", "Home") });
         }
 
         [HttpPost]

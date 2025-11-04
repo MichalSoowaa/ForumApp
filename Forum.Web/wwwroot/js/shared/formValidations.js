@@ -1,4 +1,5 @@
-﻿import { errors } from "../shared/errors.js";
+﻿import { showErrors } from "./errors.js";
+import { showGlobalError } from "./errors.js";
 
 export function validateForm(formSelector) {
     const form = document.getElementById(formSelector);
@@ -32,15 +33,15 @@ export function validateForm(formSelector) {
             const result = await response.json();
 
             if (result.success) {
-                location.reload();
+                window.location.href = result.redirectUrl;
             }
             else {
-                errors.showErrors(formSelector, result.errors);
+                showErrors(formSelector, result.errors);
             }
         }
         catch (err) {
-            console.error(err.messages);
-            errors.showGlobalError(`Nie udało połączyć się z serwerem. ${err.messages}`);
+            console.error(err.message);
+            showGlobalError(`Nie udało połączyć się z serwerem. ${err.message}`);
         }
     });
 }

@@ -1,11 +1,11 @@
 ﻿export function showErrors(formId, errors) {
-    document.querySelectorAll("error").forEach(e => e.remove());
+    document.querySelectorAll(".error").forEach(e => e.remove());
 
     console.log(errors);
 
     for (const key in errors) {
         const messages = errors[key];
-        const input = document.querySelector(`${formId} [name="${key}"]`);
+        const input = document.querySelector(`#${formId} [name="${key}"]`);
 
         if (input) {
             const span = document.createElement("span");
