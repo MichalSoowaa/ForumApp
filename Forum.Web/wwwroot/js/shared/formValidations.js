@@ -27,8 +27,11 @@ export function validateForm(formSelector) {
                 body: data
             });
 
-            if (!response.ok)
-                throw new Error(`HTTP Error ${response.status}`);
+            if (!response.ok) {
+                console.error("Server error:", response.status);
+                window.location.href = "/Home/Error";
+                return;
+            }
 
             const result = await response.json();
 

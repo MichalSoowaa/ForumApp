@@ -73,8 +73,9 @@ namespace Forum.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserRegisterDTO model)
         {
-            try
-            {
+            //try
+            //{
+            throw new Exception();
                 var command = new RegisterUserCommand(model.Username, model.Email, model.Password, model.ConfirmedPassword);
 
 				var result = await _mediator.Send(command);
@@ -114,20 +115,20 @@ namespace Forum.Web.Controllers
                     x => x.Value.Errors.Select(e => e.ErrorMessage).ToArray());
 
                 return Json(new { success = false, errors = allErrors });
-            }
-            catch (Exception ex)
-            {
-                //throw new Exception();
+            //}
+            //catch (Exception ex)
+            //{
+            //    //throw new Exception();
 
-                return Json(new
-                {
-                    success = false,
-                    errors = new Dictionary<string, string[]>
-                    {
-                        { "", new[] { "Błąd serwera: " + ex.Message } }
-                    }
-                });
-            }
+            //    return Json(new
+            //    {
+            //        success = false,
+            //        errors = new Dictionary<string, string[]>
+            //        {
+            //            { "", new[] { "Błąd serwera: " + ex.Message } }
+            //        }
+            //    });
+            //}
         }
     }
 }

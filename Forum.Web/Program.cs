@@ -9,6 +9,9 @@ builder.Services.ForumAddApplication(builder.Configuration);
 
 var app = builder.Build();
 
+//app.UseMiddleware<ExceptionMiddleware>();
+
+//app.UseExceptionHandler("/Home/Error");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
